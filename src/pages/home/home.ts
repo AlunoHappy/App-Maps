@@ -1,14 +1,40 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { NavController, Platform } from 'ionic-angular';
+
+declare var google: any;
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
-
-  constructor(public navCtrl: NavController) {
-
-  }
-
-}
+  @ViewChild('map') mapElement: ElementRef;
+  map: any;
+  
+  constructor(
+    public navCtrl: NavController,
+    private Platform: Platform
+    ) {
+    Platform.ready().then(() => {
+    this.initMap();
+    })
+    }
+    initMap(){
+     // Localização HappyCode Morumbi
+      var happycode = {
+      lat: -23.625183,
+      lng: -46.737448
+      };
+      this.map = new google.maps.Map(this.mapElement.nativeElement, {
+      zoom: 16,
+      center: happycode,
+      disableDefaultUI: true
+      });
+      var marker = new google.maps.Marker({
+      position: happycode,
+      map: this.map,
+      title: 'My Position!'
+      });
+     }
+    }
+  
